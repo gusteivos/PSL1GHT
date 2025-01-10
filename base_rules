@@ -86,6 +86,7 @@ endif
 #---------------------------------------------------------------------------------
 # canned command sequence for binary data
 #---------------------------------------------------------------------------------
+
 define bin2o
 	$(VERB) bin2s -a 64 $< | $(AS) -o $(@)
 	$(VERB) echo "extern const u8" `(echo $(<F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"_end[];" > `(echo $(<F) | tr . _)`.h
@@ -93,4 +94,9 @@ define bin2o
 	$(VERB) echo "extern const u32" `(echo $(<F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`_size";" >> `(echo $(<F) | tr . _)`.h
 endef
 
-
+define bin2onc
+	$(VERB) bin2s -n -a 64 $< | $(AS) -o $(@)
+	$(VERB) echo "extern u8" `(echo $(<F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"_end[];" > `(echo $(<F) | tr . _)`.h
+	$(VERB) echo "extern u8" `(echo $(<F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"[];" >> `(echo $(<F) | tr . _)`.h
+	$(VERB) echo "extern u32" `(echo $(<F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`_size";" >> `(echo $(<F) | tr . _)`.h
+endef
